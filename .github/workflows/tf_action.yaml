@@ -1,0 +1,39 @@
+name: Plan / Test On PR
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  teraform_deploy:
+    name: Init_deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.0
+
+      - name: terraform init
+        run: terraform init
+        
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+           role-to-assume: arn:aws:iam::623470070525:role/k8role
+           aws-region: us-east-1
+           
+      - name: terraform plan
+        working-directory: ./
+        run: terraform plan
+      
+      - name: terraform apply
+        working-directory: ./
+        run: terraform apply -auto-approve
