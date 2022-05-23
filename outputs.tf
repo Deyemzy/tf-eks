@@ -1,6 +1,6 @@
-#
+
 # Outputs
-#
+
 
 locals {
   config_map_aws_auth = <<CONFIGMAPAWSAUTH
