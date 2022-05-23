@@ -3,7 +3,7 @@ name: Plan / Test On PR
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   teraform_deploy:
